@@ -103,4 +103,11 @@ return {
                         require("Comment").setup()
                 end,
         },
+
+        -- Easy Tmux Navigation
+        {
+                "christoomey/vim-tmux-navigator",
+                lazy = false, -- or true if you prefer
+        },
+
 }

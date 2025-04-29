@@ -11,6 +11,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
         end,
 })
 
+vim.o.shortmess = vim.o.shortmess .. "A"
+
 -- Yank into system clipboard
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y') -- yank motion
 vim.keymap.set({ "n", "v" }, "<leader>Y", '"+Y') -- yank line
@@ -33,3 +35,11 @@ vim.api.nvim_create_autocmd("CmdlineEnter", {
         pattern = "/,?",
         command = "set nohlsearch",
 })
+
+-- Lua (init.lua or after/plugin/colors.lua etc.)
+vim.cmd([[
+  highlight Normal guibg=NONE ctermbg=NONE
+  highlight NormalNC guibg=NONE ctermbg=NONE
+  highlight SignColumn guibg=NONE
+  highlight VertSplit guibg=NONE
+]])
