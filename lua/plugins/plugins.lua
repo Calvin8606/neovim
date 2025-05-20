@@ -110,4 +110,17 @@ return {
                 lazy = false, -- or true if you prefer
         },
 
+        -- Toggle Terminal
+        {
+                "akinsho/toggleterm.nvim",
+                version = "*",
+                config = function()
+                        require("toggleterm").setup({
+                                open_mapping = [[<C-t>]], -- Or any other key combo you like
+                                direction = "horizontal", -- or "horizontal", "vertical", "tab"
+                        })
+
+                        vim.keymap.set("n", "<C-t>", "<cmd>ToggleTerm<CR>", { noremap = true, silent = true })
+                end,
+        },
 }

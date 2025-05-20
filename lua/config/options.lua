@@ -5,13 +5,13 @@ vim.opt.relativenumber = true
 vim.opt.expandtab = true
 -- Set proper indentation for C++
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "cpp", "c", "h", "hpp" },
-	callback = function()
-		vim.opt.tabstop = 2      -- Number of spaces per tab
-		vim.opt.shiftwidth = 2   -- Number of spaces per indentation
-		vim.opt.softtabstop = 2  -- Make <Tab> feel like spaces
-		vim.opt.expandtab = true -- Convert tabs to spaces
-	end,
+        pattern = { "cpp", "c", "h", "hpp" },
+        callback = function()
+                vim.opt.tabstop = 2      -- Number of spaces per tab
+                vim.opt.shiftwidth = 2   -- Number of spaces per indentation
+                vim.opt.softtabstop = 2  -- Make <Tab> feel like spaces
+                vim.opt.expandtab = true -- Convert tabs to spaces
+        end,
 })
 
 -- vim.api.nvim_create_autocmd("FileType", {
@@ -27,11 +27,20 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.opt.clipboard = "unnamedplus"
 
 vim.diagnostic.config({
-	virtual_text = true, -- Shows inline error text
-	signs = true,  -- Shows signs in the gutter
-	underline = true,
-	update_in_insert = false,
-	severity_sort = true,
+        virtual_text = true, -- Shows inline error text
+        signs = true,        -- Shows signs in the gutter
+        underline = true,
+        update_in_insert = false,
+        severity_sort = true,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+        pattern = "odin",
+        callback = function()
+                vim.opt_local.tabstop = 4
+                vim.opt_local.shiftwidth = 4
+                vim.opt_local.expandtab = false
+        end,
 })
 
 return M -- Ensure this line is present

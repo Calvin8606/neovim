@@ -5,23 +5,28 @@ return {
                 require("mason").setup()
                 require("mason-lspconfig").setup({
                         ensure_installed = { "lua_ls", "clangd", "rust_analyzer", "zls" },
+                        automatic_installation = false,
                 })
 
                 local lspconfig = require("lspconfig")
+                local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-                -- Lua setup (fix undefined `vim` warning)
                 lspconfig.lua_ls.setup({
                         settings = {
                                 Lua = {
                                         diagnostics = {
-                                                globals = { "vim" },
+                                                globals = { "vim", "require" },
+                                        },
+                                        workspace = {
+                                                library = vim.api.nvim_get_runtime_file("", true),
+                                                checkThirdParty = false,
+                                        },
+                                        telemetry = {
+                                                enable = false,
                                         },
                                 },
                         },
                 })
-
-                local capabilities = require("cmp_nvim_lsp").default_capabilities()
-                capabilities.offsetEncoding = { "utf-16" }
 
                 -- lspconfig.gopls.setup({
                 --         capabilities = capabilities,
@@ -55,16 +60,16 @@ return {
                         root_dir = lspconfig.util.root_pattern(".git", "Makefile"),
                         on_attach = function(client, bufnr)
                                 -- -- Enable LSP-based formatting
-                                -- client.server_capabilities.documentFormattingProvider = true
+                                client.server_capabilities.documentFormattingProvider = true
                                 --
                                 -- -- Remove `pattern`, only use `buffer`
-                                -- vim.api.nvim_create_autocmd("BufWritePre", {
-                                -- 	group = vim.api.nvim_create_augroup("ClangdAutoFormat", { clear = true }),
-                                -- 	buffer = bufnr, -- Only apply to the current buffer
-                                -- 	callback = function()
-                                -- 		vim.lsp.buf.format({ async = false })
-                                -- 	end,
-                                -- })
+                                vim.api.nvim_create_autocmd("BufWritePre", {
+                                        group = vim.api.nvim_create_augroup("ClangdAutoFormat", { clear = true }),
+                                        buffer = bufnr, -- Only apply to the current buffer
+                                        callback = function()
+                                                vim.lsp.buf.format({ async = false })
+                                        end,
+                                })
                         end,
                 })
 
@@ -93,19 +98,16 @@ return {
                         end,
                 })
 
+                -- OLS FOR ODIN
+
                 lspconfig.ols.setup({
                         cmd = { "/Users/calvin/ols/ols" },
                         init_options = {
                                 checker_args = "-strict-style",
                         },
                         on_attach = function(client, bufnr)
-                                client.server_capabilities.documentFormattingProvider = true
-                                vim.api.nvim_create_autocmd("BufWritePre", {
-                                        buffer = bufnr,
-                                        callback = function()
-                                                vim.lsp.buf.format({ async = false })
-                                        end,
-                                })
+                                -- Disable LSP formatting so it doesn't conflict with conform.nvim
+                                client.server_capabilities.documentFormattingProvider = false
                         end,
                 })
 
